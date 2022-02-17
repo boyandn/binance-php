@@ -91,7 +91,8 @@ class SocketServer
             if(empty($keysecret)) return;
 
             $this->keysecretInit($keysecret,[
-                'connection'=>1
+                'connection'=>1,
+                'listen_key_time'=>time(),
             ]);
 
             $this->log($keysecret['key'].' new connect send');
@@ -180,7 +181,12 @@ class SocketServer
         $time=isset($this->config['ping_time']) ? $this->config['ping_time'] : 20 ;
 
         $con->timer_ping=Timer::add($time, function() use ($con) {
-            //$con->send('ping');
+            $data=[
+                "method"=>"PONG",
+                'params'=>null,
+                'id'=>$this->getId()
+            ];
+            $con->send(json_encode($data));
 
             $this->log($con->tag.' send ping');
         });
@@ -339,7 +345,6 @@ class SocketServer
     private function account($con,$global){
         $keysecret=$global->get('keysecret');
         if(empty($keysecret)) return;
-
         foreach ($keysecret as $k=>$v){
             //是否取消连接
             if($con->tag!='public' && isset($v['connection_close']) && $v['connection_close']==1){
@@ -350,7 +355,7 @@ class SocketServer
                 $this->log('private connection close '.$v['key']);
                 continue;
             }
-
+//            $this->log(var_dump($v, true));
 
             //是否有新的连接
             if(isset($v['connection'])){

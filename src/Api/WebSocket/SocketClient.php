@@ -112,6 +112,11 @@ class SocketClient
         return $this->getData($this,$callback);
     }
 
+    public function getSubscriptions(){
+        $subs = $this->client()->get('all_sub');
+        return $subs;
+    }
+
     protected function daemon($callback=null,$sub=[]){
         $worker = new Worker();
         $worker->onWorkerStart = function() use($callback,$sub) {

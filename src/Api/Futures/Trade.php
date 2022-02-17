@@ -133,6 +133,16 @@ class Trade extends Request
     }
 
     /*
+     *POST /fapi/v1/marginType (HMAC SHA256)
+     */
+    public function postMarginType(array $data=[]){
+        $this->type='POST';
+        $this->path='/fapi/'.$this->version.'/marginType';
+        $this->data=array_merge($this->data,$data);
+        return $this->exec();
+    }
+
+    /*
      *GET /fapi/v1/positionMargin/history (HMAC SHA256)
      */
     public function getPositionMarginHistory(array $data=[]){
