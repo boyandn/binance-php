@@ -111,6 +111,16 @@ class Trade extends Request
         $this->data=array_merge($this->data,$data);
         return $this->exec();
     }
+    
+    /*
+     *GET /fapi/v1/leverageBracket (HMAC SHA256)
+     */
+    public function postLeverageBracket(array $data=[]){
+        $this->type='get';
+        $this->path='/fapi/'.$this->version.'/leverageBracket';
+        $this->data=array_merge($this->data,$data);
+        return $this->exec();
+    }
 
     /*
      *POST /fapi/v1/marginType (HMAC SHA256)
